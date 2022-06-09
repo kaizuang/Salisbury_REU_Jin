@@ -139,15 +139,15 @@
      imshow(filtered)
  end
  volume = 0;
- %rebinarize reblured images and invert and sum
+ %rebinarize reblured images and sum
  rebluredd = dir("reblured_d/*.jpg");
  for o = 1 : length(rebluredd)
      %finds contour image
      image_path = strcat("reblured_d/",rebluredd(o).name);
      img = imread(image_path);
      %filters contour image
-     filtered = imcomplement(imbinarize(img,.135));
-     volume = volume + (sum(sum(filtered)) * .7) ;
+     filtered = imbinarize(img,.135);
+     volume = volume + (sum(sum(filtered)) * .7)/256 ;
      new_file_path = strcat("rebinarized_d/",rebluredd(o).name);
      imwrite(filtered,new_file_path)
      imshow(filtered)
@@ -158,8 +158,8 @@
      image_path = strcat("reblured_l/",rebluredl(o).name);
      img = imread(image_path);
      %filters contour image
-     filtered = imcomplement(imbinarize(img,.04));
-     volume = volume + (sum(sum(filtered))*.7);
+     filtered = imbinarize(img,.04);
+     volume = volume + (sum(sum(filtered))*.7)/256;
      new_file_path = strcat("rebinarized_l/",rebluredl(o).name);
      imwrite(filtered,new_file_path)
      imshow(filtered)
