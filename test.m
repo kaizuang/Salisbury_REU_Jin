@@ -1,5 +1,6 @@
 
- directory = dir("photos/*.jpg");
+directory = dir("photos/*.jpg");
+
 
  %crops
  for i = 1:length(directory)
@@ -7,7 +8,9 @@
       image_path = strcat("photos/",directory(i).name);
       img = rgb2gray(imread(image_path));
       %Crops to a 509 x 461 image and writes to new file
-      cropped = imcrop(img,[16,200,508,460]);
+      cropped = imcrop(medfilt2(histNormal(img,10,255)),[20,75,520,709]);
+      [x,y] = findCenterOfMass(cropped);
+      cropped2 = imcrop(cropped,[round(x)-200,round(y)-200,400,400]);
       if sum(sum(img)>10000) < 200
         new_file_path = strcat("cropped_dark/",directory(i).name);
 
@@ -15,7 +18,7 @@
         new_file_path = strcat("cropped_light/",directory(i).name);
 
       end  
-      imwrite(cropped,new_file_path);
+      imwrite(cropped2,new_file_path);
  end
 
  %filters
@@ -165,8 +168,3 @@
      imshow(filtered)
  end
  disp(strcat("volume is ~ ",string(volume)," units^3"))
- 
-
- 
-
-
